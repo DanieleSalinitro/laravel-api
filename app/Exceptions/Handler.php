@@ -27,4 +27,18 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    /**
+     * Render an exception into an HTTP response.
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            return response()->json([
+                'message' => 'Resource not found'
+            ], 404);
+        }
+
+        return parent::render($request, $exception);
+    }
 }

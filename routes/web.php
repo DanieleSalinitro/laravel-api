@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\TechnologyController;
+use App\Http\Controllers\ContactController; // Importa il controller di contatto
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,6 @@ Route::middleware(['auth', 'verified'])->name('admin.')->prefix('admin')->group(
     Route::resource('technologies', TechnologyController::class);
 });
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -37,14 +37,13 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+// Rotte per il form di contatto
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact.form');
+
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
 Route::fallback(function () {
     return redirect()->route('admin.dashboard');
 });
-
-
-
-
-
-
-
-
